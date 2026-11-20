@@ -5,6 +5,7 @@
 // or GOOGLE_APPLICATION_CREDENTIALS if set. Never prints secret values.
 import { initializeApp, applicationDefault } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
+import { getAuth } from "firebase-admin/auth";
 import { createPrivateKey, sign, generateKeyPairSync } from "node:crypto";
 
 const DEMO_REPO_URL = process.env.DEMO_REPO_URL || "https://github.com/ShubhAFK/ratelimit-kit";
@@ -25,11 +26,36 @@ const app = process.env.GOOGLE_APPLICATION_CREDENTIALS
   ? initializeApp({ credential: applicationDefault(), projectId })
   : initializeApp({ projectId });
 const db = getFirestore(app);
+const auth = getAuth(app);
+
+const DEMO_MENTOR_EMAIL = "mentor@skillproof.example";
+const DEMO_MENTOR_PASSWORD = "mentor";
+
+try {
+  const existing = await auth.getUserByEmail(DEMO_MENTOR_EMAIL);
+  await auth.updateUser(existing.uid, {
+    password: DEMO_MENTOR_PASSWORD,
+    emailVerified: true,
+  });
+  console.log(`seed-demo: updated existing demo mentor user (${DEMO_MENTOR_EMAIL}).`);
+} catch (e) {
+  if (e?.code === "auth/user-not-found") {
+    await auth.createUser({
+      email: DEMO_MENTOR_EMAIL,
+      password: DEMO_MENTOR_PASSWORD,
+      emailVerified: true,
+      displayName: "SkillProof Demo Mentor",
+    });
+    console.log(`seed-demo: created demo mentor user (${DEMO_MENTOR_EMAIL}).`);
+  } else {
+    throw e;
+  }
+}
 
 const submission = {
   uid: "demo-learner",
   email: "demo-learner@skillproof.demo",
-  learner: "Aarav Mehta (demo learner)",
+  learner: "Shubh Sharma",
   title: "ratelimit-kit: Token Bucket and Sliding Window rate limiters in TypeScript",
   description:
     "A small dependency-free TypeScript library with two rate limiting algorithms behind one RateLimiter interface. " +
@@ -58,24 +84,25 @@ const sampleCredential = {
   },
   validFrom: new Date(Date.now() - 86400000 * 3).toISOString(),
   credentialSubject: {
-    name: "Alex Rivera",
+    name: "Shubh Sharma",
     achievement: {
-      name: "Distributed Consensus Engine & Raft Implementation",
+      name: "ratelimit-kit: Token Bucket & Sliding Window Rate Limiting Engine",
       description:
-        "Demonstrated advanced distributed systems engineering including Raft leader election, fault-tolerant log replication, state machine snapshotting, and network partition recovery under real chaos conditions.",
+        "Engineered a zero-dependency, high-throughput TypeScript rate limiting library implementing Token Bucket (lazy refill) and Sliding Window log algorithms with atomic multi-unit consumption, zero timer drift, and 100% fake-timer test coverage.",
       skills: [
-        "Distributed Systems",
-        "Raft Protocol",
-        "Go / Concurrency",
-        "Network Partitions",
-        "Log Compaction",
+        "TypeScript",
+        "Rate Limiting",
+        "Token Bucket Algorithm",
+        "Sliding Window Log",
+        "Concurrency & Atomicity",
+        "Unit Testing",
       ],
       rating: 5,
     },
   },
   evidence: [
     {
-      id: "https://github.com/example-learner/raft-consensus-engine",
+      id: "https://github.com/ShubhAFK/ratelimit-kit",
     },
   ],
 };

@@ -227,9 +227,7 @@ textarea::placeholder {
 }
 
 .brand::before {
-  content: "◆";
-  font-size: 0.75rem;
-  color: var(--gold);
+  content: "";
 }
 
 .nav-links {

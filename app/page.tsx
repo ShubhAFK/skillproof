@@ -12,9 +12,11 @@ export default function Home() {
         <section className="hero">
           <div className="seal-crest" aria-hidden="true">
             <span className="crest-ring">
-              <span className="crest-inner">★</span>
+              <svg className="w-4 h-4 text-amber-400 inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
             </span>
-            <span className="crest-text">NOTARY &amp; VERIFICATION LEDGER</span>
+            <span className="crest-text">CRYPTOGRAPHIC VERIFICATION PROTOCOL</span>
           </div>
 
           <h1 className="hero-title">
@@ -22,9 +24,7 @@ export default function Home() {
           </h1>
 
           <p className="hero-lead">
-            SkillProof is a cryptographic ledger
-            where mentors evaluate real codebases with Gemini assistance, sign with Ed25519,
-            and provide proof recruiters verify in one click.
+            SkillProof is a verifiable credential platform where mentors evaluate real codebases with Gemini assistance, sign with Ed25519, and issue proof recruiters can verify instantly.
           </p>
 
           <div className="hero-actions">
@@ -82,7 +82,7 @@ export default function Home() {
 
         <section className="strip-section">
           <div className="section-header">
-            <span className="notary-kicker">THE THREE-STEP NOTARY LEDGER</span>
+            <span className="notary-kicker">HOW VERIFICATION WORKS</span>
             <h2>How engineering work becomes verifiable proof</h2>
           </div>
 
@@ -138,7 +138,7 @@ export default function Home() {
               <div className="sample-stamp-badge">
                 <span className="stamp-sub">OPEN BADGES 3.0</span>
                 <span className="stamp-main">ED25519</span>
-                <span className="stamp-sub">VERIFIED LEDGER</span>
+                <span className="stamp-sub">CRYPTOGRAPHICALLY VERIFIED</span>
               </div>
             </div>
           </div>

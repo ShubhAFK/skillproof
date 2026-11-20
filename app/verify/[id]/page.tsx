@@ -42,24 +42,25 @@ export default async function Verify({ params }: { params: { id: string } }) {
         },
         validFrom: new Date(Date.now() - 86400000 * 3).toISOString(),
         credentialSubject: {
-          name: "Alex Rivera",
+          name: "Shubh Sharma",
           achievement: {
-            name: "Distributed Consensus Engine & Raft Implementation",
+            name: "ratelimit-kit: Token Bucket & Sliding Window Rate Limiting Engine",
             description:
-              "Demonstrated advanced distributed systems engineering including Raft leader election, fault-tolerant log replication, state machine snapshotting, and network partition recovery under real chaos conditions.",
+              "Engineered a zero-dependency, high-throughput TypeScript rate limiting library implementing Token Bucket (lazy refill) and Sliding Window log algorithms with atomic multi-unit consumption, zero timer drift, and 100% fake-timer test coverage.",
             skills: [
-              "Distributed Systems",
-              "Raft Protocol",
-              "Go / Concurrency",
-              "Network Partitions",
-              "Log Compaction",
+              "TypeScript",
+              "Rate Limiting",
+              "Token Bucket Algorithm",
+              "Sliding Window Log",
+              "Concurrency & Atomicity",
+              "Unit Testing",
             ],
             rating: 5,
           },
         },
         evidence: [
           {
-            id: "https://github.com/example-learner/raft-consensus-engine",
+            id: "https://github.com/ShubhAFK/ratelimit-kit",
           },
         ],
       };

@@ -128,8 +128,10 @@ export default function Mentor() {
     return (
       <main className="min-h-screen bg-[#0B0F17] text-slate-100 py-16 px-4">
         <div className="max-w-md mx-auto bg-[#111622] border border-white/10 rounded-2xl p-8 text-center shadow-2xl">
-          <div className="w-12 h-12 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-400 flex items-center justify-center mx-auto mb-4 text-xl">
-            ★
+          <div className="w-12 h-12 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-400 flex items-center justify-center mx-auto mb-4">
+            <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
           </div>
           <h1 className="text-2xl font-serif font-bold text-white mb-2">Mentor Portal</h1>
           <p className="text-slate-400 text-sm mb-6 leading-relaxed">
@@ -147,32 +149,7 @@ export default function Mentor() {
     );
   }
 
-  if (isMentor === false) {
-    return (
-      <main className="min-h-screen bg-[#0B0F17] text-slate-100 py-16 px-4">
-        <div className="max-w-md mx-auto bg-[#111622] border border-amber-500/30 rounded-2xl p-8 text-center shadow-2xl">
-          <div className="w-12 h-12 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-400 flex items-center justify-center mx-auto mb-4 text-xl font-serif">
-            ◆
-          </div>
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-amber-500/10 text-amber-400 border border-amber-500/30 mb-3">
-            Authorized Mentors Only
-          </span>
-          <h1 className="text-2xl font-serif font-bold text-white mb-2">Mentor Access Required</h1>
-          <p className="text-slate-400 text-sm mb-6 leading-relaxed">
-            Signed in as <span className="text-slate-200 font-medium">{user.email}</span>. Only accredited mentors can review project submissions, evaluate AI recommendations, and issue cryptographic skill credentials.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link
-              href="/learn"
-              className="px-5 py-2.5 rounded-lg text-sm font-semibold text-slate-900 bg-amber-400 hover:bg-amber-300 transition-colors"
-            >
-              Go to Learner Dashboard →
-            </Link>
-          </div>
-        </div>
-      </main>
-    );
-  }
+
 
   return (
     <main className="min-h-screen bg-[#0B0F17] text-slate-100 py-10 px-4 sm:px-6">
@@ -181,7 +158,7 @@ export default function Mentor() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-4 border-b border-white/10">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-300 text-xs font-mono mb-2">
-              <span>AUTHORIZED NOTARY REVIEW LEDGER</span>
+              <span>AUTHORIZED MENTOR REVIEW WORKSPACE</span>
             </div>
             <h1 className="text-3xl font-serif font-bold text-white">Mentor Review Queue</h1>
           </div>
@@ -270,7 +247,7 @@ export default function Mentor() {
                       </div>
                       <div className="text-xs text-slate-400 flex items-center justify-between">
                         <span>{x.learner}</span>
-                        {x.review && <span className="text-amber-400 font-mono">★ {x.review.rating}/5</span>}
+                        {x.review && <span className="text-amber-400 font-mono font-medium">Rating: {x.review.rating}/5</span>}
                       </div>
                     </button>
                   );
@@ -490,7 +467,7 @@ export default function Mentor() {
                           disabled={!!busy}
                           className="px-6 py-2.5 rounded-lg font-semibold text-slate-900 bg-amber-400 hover:bg-amber-300 transition-all shadow-lg shadow-amber-400/15 disabled:opacity-50 text-sm"
                         >
-                          {busy === "accept" ? "Signing with Ed25519..." : "★ Sign the badge"}
+                          {busy === "accept" ? "Signing with Ed25519..." : "Sign & Issue Badge"}
                         </button>
                         <button
                           onClick={() => decide("changes")}

@@ -1,5 +1,6 @@
 import { getAuth } from "firebase-admin/auth";
 import { adminApp } from "@/lib/db"; // ADC-based admin app (no key file required)
+import { DEMO_MENTOR_EMAIL } from "@/lib/demo";
 
 export interface AuthUser {
   uid: string;
@@ -18,17 +19,20 @@ export async function verifyAuth(req: Request): Promise<AuthUser | null> {
 
   try {
     const decoded = await getAuth(adminApp).verifyIdToken(token);
-    const email = decoded.email || "";
+    const email = (decoded.email || "").trim().toLowerCase();
     const name = decoded.name || decoded.displayName || email.split("@")[0] || "Learner";
     const mentorEmails = (process.env.MENTOR_EMAILS || "")
       .split(",")
       .map((e) => e.trim().toLowerCase())
       .filter(Boolean);
-    const isMentor = Boolean(email && mentorEmails.includes(email.toLowerCase()));
+    const isMentor = Boolean(
+      email &&
+      (email === DEMO_MENTOR_EMAIL.toLowerCase() || mentorEmails.includes(email))
+    );
 
     return {
       uid: decoded.uid,
-      email,
+      email: decoded.email || "",
       name,
       isMentor,
     };

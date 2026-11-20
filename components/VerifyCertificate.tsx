@@ -203,8 +203,8 @@ export default function VerifyCertificate({
               <span className="text-xs text-slate-500 uppercase tracking-wider block mb-1 font-mono">
                 Endorsed &amp; Signed By
               </span>
-              <span className="text-base font-semibold text-amber-300 flex items-center gap-1.5">
-                <span>◆</span> {credential.issuer.name}
+              <span className="text-base font-semibold text-amber-300 flex items-center gap-2">
+                <span className="text-amber-400 text-xs">•</span> {credential.issuer.name}
               </span>
             </div>
 
@@ -295,14 +295,16 @@ export default function VerifyCertificate({
 
             {/* Seal Graphic */}
             <div className="text-center sm:text-right hidden sm:block">
-              <div className="inline-block p-2 rounded-full border border-amber-400/30 bg-amber-400/5 mb-1">
-                <span className="text-xl font-serif text-amber-400">★</span>
+              <div className="inline-block p-2.5 rounded-full border border-amber-400/30 bg-amber-400/5 mb-1">
+                <svg className="w-5 h-5 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg>
               </div>
               <span className="block text-[10px] font-mono tracking-widest text-slate-400 uppercase">
                 ED25519 ASYMMETRIC KEYPAIR
               </span>
               <span className="block text-[10px] font-mono text-slate-500">
-                NOTARY LEDGER ROOT
+                CRYPTOGRAPHIC TRUST ROOT
               </span>
             </div>
           </div>

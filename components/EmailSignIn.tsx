@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useAuth } from "@/lib/firebase-client";
+import { DEMO_MENTOR_EMAIL, DEMO_MENTOR_PASSWORD } from "@/lib/demo";
 
 function friendlyAuthError(code?: string): string {
   switch (code) {
@@ -28,9 +29,7 @@ export default function EmailSignIn({ showDemoAccess = false }: { showDemoAccess
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
 
-  const demoEmail = process.env.NEXT_PUBLIC_DEMO_MENTOR_EMAIL || "";
-  const demoPassword = process.env.NEXT_PUBLIC_DEMO_MENTOR_PASSWORD || "";
-  const hasDemo = showDemoAccess && Boolean(demoEmail && demoPassword);
+
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -98,25 +97,30 @@ export default function EmailSignIn({ showDemoAccess = false }: { showDemoAccess
         </button>
       </form>
 
-      {hasDemo && (
+      {showDemoAccess && (
         <div className="mt-5 rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3">
           <p className="text-[11px] font-mono uppercase tracking-widest text-slate-400 mb-2">Evaluation access</p>
           <dl className="grid grid-cols-[72px_1fr] gap-y-1 text-xs">
             <dt className="text-slate-500">Email</dt>
-            <dd className="font-mono text-slate-300 break-all">{demoEmail}</dd>
+            <dd className="font-mono text-slate-300 break-all">{DEMO_MENTOR_EMAIL}</dd>
             <dt className="text-slate-500">Password</dt>
-            <dd className="font-mono text-slate-300 break-all">{demoPassword}</dd>
+            <dd className="font-mono text-slate-300 break-all">{DEMO_MENTOR_PASSWORD}</dd>
           </dl>
-          <button
-            type="button"
-            onClick={() => {
-              setEmail(demoEmail);
-              setPassword(demoPassword);
-            }}
-            className="mt-2 text-xs font-medium text-amber-400 hover:text-amber-300 transition-colors"
-          >
-            Fill in demo credentials
-          </button>
+          <div className="mt-3 flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                setEmail(DEMO_MENTOR_EMAIL);
+                setPassword(DEMO_MENTOR_PASSWORD);
+              }}
+              className="text-xs font-semibold text-amber-400 hover:text-amber-300 transition-colors"
+            >
+              Fill login
+            </button>
+            <span className="text-xs text-slate-400">
+              For Evaluation Purposes
+            </span>
+          </div>
         </div>
       )}
     </div>

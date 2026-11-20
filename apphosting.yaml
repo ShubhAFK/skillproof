@@ -35,17 +35,9 @@ env:
     value: https://REPLACE_WITH_BACKEND_URL
     availability: [BUILD, RUNTIME]
 
-  # ---- Demo mentor (evaluation account) ----
-  - variable: NEXT_PUBLIC_DEMO_MENTOR_EMAIL
-    value: REPLACE_WITH_DEMO_MENTOR_EMAIL
-    availability: [BUILD, RUNTIME]
-  - variable: NEXT_PUBLIC_DEMO_MENTOR_PASSWORD
-    value: REPLACE_WITH_DEMO_MENTOR_PASSWORD
-    availability: [BUILD, RUNTIME]
-
   # ---- Server config ----
   - variable: MENTOR_EMAILS
-    value: REPLACE_WITH_COMMA_SEPARATED_MENTOR_EMAILS
+    value: mentor@skillproof.example
     availability: [RUNTIME]
   - variable: GCP_PROJECT
     value: skillproof-52076

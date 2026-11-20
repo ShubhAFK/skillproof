@@ -113,8 +113,10 @@ export default function Learn() {
     return (
       <main className="min-h-screen bg-[#0B0F17] text-slate-100 py-16 px-4">
         <div className="max-w-md mx-auto bg-[#111622] border border-white/10 rounded-xl p-8 text-center shadow-2xl">
-          <div className="w-12 h-12 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-400 flex items-center justify-center mx-auto mb-5 text-xl font-serif">
-            ◆
+          <div className="w-12 h-12 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-400 flex items-center justify-center mx-auto mb-5">
+            <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
           </div>
           <h1 className="text-2xl font-serif font-bold text-white mb-2">Submit Your Work</h1>
           <p className="text-slate-400 text-sm mb-6 leading-relaxed">
@@ -143,7 +145,7 @@ export default function Learn() {
         {/* Header */}
         <div className="mb-8">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-300 text-xs font-mono mb-3">
-            <span>LEARNER NOTARY SUBMISSION</span>
+            <span>LEARNER PROJECT SUBMISSION</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-serif font-bold text-white mb-2">
             Submit your work
