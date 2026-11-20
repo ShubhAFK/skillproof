@@ -2,13 +2,14 @@ import { consumeGeminiBudget } from "@/lib/ratelimit";
 
 const PRO = process.env.GEMINI_PRO_MODEL || "gemini-3.8-flash";
 const FLASH = process.env.GEMINI_FLASH_MODEL || "gemini-3.1-flash-lite";
+const FALLBACK = process.env.GEMINI_FALLBACK_MODEL || "gemini-3.7-flash";
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 async function sendRequest(model: string, system: string, input: unknown) {
-  const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${process.env.GEMINI_API_KEY}`, {
+  const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", "x-goog-api-key": process.env.GEMINI_API_KEY! },
     body: JSON.stringify({
       systemInstruction: { parts: [{ text: system }] },
       contents: [{ role: "user", parts: [{ text: JSON.stringify(input) }] }],
@@ -28,36 +29,6 @@ async function sendRequest(model: string, system: string, input: unknown) {
   return JSON.parse(t);
 }
 
-async function call(model: string, system: string, input: unknown) {
-  // Global daily cap (counted once per logical call, not per retry). Throws LimitError (429).
-  await consumeGeminiBudget();
-
-  const delays = [1000, 2000, 4000];
-
-  for (let i = 0; i <= delays.length; i++) {
-    try {
-      return await sendRequest(model, system, input);
-    } catch (err: any) {
-      if (err?.message === "RATE_LIMIT" && i < delays.length) {
-        await sleep(delays[i]);
-        continue;
-      }
-      break;
-    }
-  }
-
-  const fallback = process.env.GEMINI_FALLBACK_MODEL || "gemini-3.7-flash";
-  if (fallback) {
-    try {
-      return await sendRequest(fallback, system, input);
-    } catch {
-      // Fallback failed
-    }
-  }
-
-  throw new Error("Gemini is busy, try again in a minute");
-}
-
 const REVIEW_SYS = `You help a human mentor review a learner's project. You only suggest; the mentor decides.
 Return JSON only: {"skills":[string],"rating":1-5,"reasons":[string],"riskFlags":[string],"liveCheckQuestions":[string]}.
 skills: concrete skills the work demonstrates. reasons: 2-4 evidence-based sentences.
@@ -67,5 +38,44 @@ liveCheckQuestions: 3 short questions only the real author could answer about tr
 const BADGE_SYS = `Draft a verifiable skill badge. Return JSON only: {"title":string,"description":string}.
 title: under 8 words. description: 2 plain sentences a recruiter understands, stating what the learner demonstrated.`;
 
-export const reviewWithPro = (s: unknown) => call(PRO, REVIEW_SYS, s);
-export const draftBadgeWithFlash = (s: unknown) => call(FLASH, BADGE_SYS, s);
+export async function reviewWithPro(s: unknown) {
+  // Global daily cap (counted once per logical call, not per retry). Throws LimitError (429).
+  await consumeGeminiBudget();
+
+  try {
+    return await sendRequest(PRO, REVIEW_SYS, s);
+  } catch (err: any) {
+    if (err?.message === "RATE_LIMIT" || err?.message === "HTTP_404" || err?.message === "EMPTY_RESPONSE") {
+      try {
+        return await sendRequest(FALLBACK, REVIEW_SYS, s);
+      } catch (fallbackErr: any) {
+        if (fallbackErr?.message === "RATE_LIMIT") {
+          throw new Error("Gemini is busy, try again in a minute");
+        }
+        throw fallbackErr;
+      }
+    }
+    throw err;
+  }
+}
+
+export async function draftBadgeWithFlash(s: unknown) {
+  // Global daily cap (counted once per logical call, not per retry). Throws LimitError (429).
+  await consumeGeminiBudget();
+
+  const delays = [1000, 2000, 4000];
+  for (let i = 0; i <= delays.length; i++) {
+    try {
+      return await sendRequest(FLASH, BADGE_SYS, s);
+    } catch (err: any) {
+      if (err?.message === "RATE_LIMIT" && i < delays.length) {
+        await sleep(delays[i]);
+        continue;
+      }
+      if (err?.message === "RATE_LIMIT") {
+        throw new Error("Gemini is busy, try again in a minute");
+      }
+      throw err;
+    }
+  }
+}
