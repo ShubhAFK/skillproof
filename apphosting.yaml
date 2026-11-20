@@ -1,0 +1,78 @@
+# Firebase App Hosting config for SkillProof (project skillproof-52076, region asia-south1).
+# NO SECRET VALUES IN THIS FILE. Secrets are references to Cloud Secret Manager,
+# created with `firebase apphosting:secrets:set NAME` (see DEPLOY.md).
+# REPLACE_* placeholders are public, non-secret config; fill them in before deploying.
+
+runConfig:
+  minInstances: 0
+  maxInstances: 3
+  cpu: 1
+  memoryMiB: 512
+
+env:
+  # ---- Firebase web config (public; inlined into the client bundle at build) ----
+  - variable: NEXT_PUBLIC_FIREBASE_API_KEY
+    value: REPLACE_WITH_FIREBASE_WEB_API_KEY
+    availability: [BUILD, RUNTIME]
+  - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+    value: skillproof-52076.firebaseapp.com
+    availability: [BUILD, RUNTIME]
+  - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
+    value: skillproof-52076
+    availability: [BUILD, RUNTIME]
+  - variable: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+    value: REPLACE_WITH_STORAGE_BUCKET
+    availability: [BUILD, RUNTIME]
+  - variable: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+    value: REPLACE_WITH_MESSAGING_SENDER_ID
+    availability: [BUILD, RUNTIME]
+  - variable: NEXT_PUBLIC_FIREBASE_APP_ID
+    value: REPLACE_WITH_FIREBASE_APP_ID
+    availability: [BUILD, RUNTIME]
+
+  # Public base URL for QR codes and share links (no trailing slash). Set after first deploy.
+  - variable: NEXT_PUBLIC_BASE_URL
+    value: https://REPLACE_WITH_BACKEND_URL
+    availability: [BUILD, RUNTIME]
+
+  # ---- Demo mentor (evaluation account) ----
+  - variable: NEXT_PUBLIC_DEMO_MENTOR_EMAIL
+    value: REPLACE_WITH_DEMO_MENTOR_EMAIL
+    availability: [BUILD, RUNTIME]
+  # Shown on the mentor login page, so it ends up in the client bundle by design.
+  # Kept in Secret Manager so it is not committed to the repo.
+  - variable: NEXT_PUBLIC_DEMO_MENTOR_PASSWORD
+    secret: DEMO_MENTOR_PASSWORD
+    availability: [BUILD]
+
+  # ---- Server config ----
+  - variable: MENTOR_EMAILS
+    value: REPLACE_WITH_COMMA_SEPARATED_MENTOR_EMAILS
+    availability: [RUNTIME]
+  - variable: GCP_PROJECT
+    value: skillproof-52076
+    availability: [RUNTIME]
+  - variable: GEMINI_PRO_MODEL
+    value: gemini-2.5-pro
+    availability: [RUNTIME]
+  - variable: GEMINI_FLASH_MODEL
+    value: gemini-2.5-flash
+    availability: [RUNTIME]
+  - variable: GEMINI_FALLBACK_MODEL
+    value: gemini-2.5-flash
+    availability: [RUNTIME]
+  - variable: GEMINI_DAILY_CAP
+    value: "300"
+    availability: [RUNTIME]
+
+  # ---- Secrets (Cloud Secret Manager references) ----
+  - variable: GEMINI_API_KEY
+    secret: GEMINI_API_KEY
+    availability: [RUNTIME]
+  - variable: ISSUER_PRIVATE_KEY_PEM
+    secret: ISSUER_PRIVATE_KEY_PEM
+    availability: [RUNTIME]
+  # Optional. If you don't create this secret, delete these three lines or the rollout fails.
+  - variable: GITHUB_TOKEN
+    secret: GITHUB_TOKEN
+    availability: [RUNTIME]

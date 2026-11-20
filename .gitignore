@@ -1,0 +1,31 @@
+# dependencies
+node_modules
+
+# Next.js build output
+.next
+out
+*.tsbuildinfo
+next-env.d.ts
+
+# env files and secrets: never commit
+.env*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+service-account*.json
+*-service-account*.json
+*firebase-adminsdk*.json
+credentials*.json
+gcp-key*.json
+*-key.json
+
+# Firebase local state
+.firebase
+firebase-debug.log*
+firestore-debug.log*
+
+# misc
+npm-debug.log*
+.DS_Store

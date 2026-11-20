@@ -1,0 +1,29 @@
+{
+  "name": "skillproof",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start -p ${PORT:-8080}",
+    "genkey": "node scripts/genkey.mjs",
+    "seed:demo": "node --env-file-if-exists=.env.local scripts/seed-demo.mjs",
+    "check:secrets": "node scripts/check-secrets.mjs"
+  },
+  "dependencies": {
+    "firebase": "^13.4.0",
+    "firebase-admin": "^12.6.0",
+    "next": "14.2.15",
+    "qrcode": "^1.5.4",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/qrcode": "^1.5.6",
+    "@types/react": "^18",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "3.4.17",
+    "typescript": "^5"
+  }
+}
