@@ -1,7 +1,6 @@
-# Firebase App Hosting config for SkillProof (project skillproof-52076, region asia-south1).
+# Firebase App Hosting config for SkillProof (project skillproof-52076, region asia-southeast1).
 # NO SECRET VALUES IN THIS FILE. Secrets are references to Cloud Secret Manager,
-# created with `firebase apphosting:secrets:set NAME` (see DEPLOY.md).
-# REPLACE_* placeholders are public, non-secret config; fill them in before deploying.
+# created with `firebase apphosting:secrets:set NAME`.
 
 runConfig:
   minInstances: 0
@@ -12,7 +11,7 @@ runConfig:
 env:
   # ---- Firebase web config (public; inlined into the client bundle at build) ----
   - variable: NEXT_PUBLIC_FIREBASE_API_KEY
-    value: REPLACE_WITH_FIREBASE_WEB_API_KEY
+    value: AIzaSyDRjc_SYV39HZlJvrUTWDJStJiXq1YyqwU
     availability: [BUILD, RUNTIME]
   - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
     value: skillproof-52076.firebaseapp.com
@@ -21,18 +20,18 @@ env:
     value: skillproof-52076
     availability: [BUILD, RUNTIME]
   - variable: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
-    value: REPLACE_WITH_STORAGE_BUCKET
+    value: skillproof-52076.appspot.com
     availability: [BUILD, RUNTIME]
   - variable: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
-    value: REPLACE_WITH_MESSAGING_SENDER_ID
+    value: "29487512550"
     availability: [BUILD, RUNTIME]
   - variable: NEXT_PUBLIC_FIREBASE_APP_ID
-    value: REPLACE_WITH_FIREBASE_APP_ID
+    value: 1:29487512550:web:96505763b6e3c48b5f3427
     availability: [BUILD, RUNTIME]
 
-  # Public base URL for QR codes and share links (no trailing slash). Set after first deploy.
+  # Public base URL for QR codes and share links (no trailing slash).
   - variable: NEXT_PUBLIC_BASE_URL
-    value: https://REPLACE_WITH_BACKEND_URL
+    value: https://skillproof--skillproof-52076.asia-southeast1.hosted.app
     availability: [BUILD, RUNTIME]
 
   # ---- Server config ----
@@ -41,6 +40,9 @@ env:
     availability: [RUNTIME]
   - variable: GCP_PROJECT
     value: skillproof-52076
+    availability: [RUNTIME]
+  - variable: ISSUER_NAME
+    value: Karbon X Demo Mentor
     availability: [RUNTIME]
   - variable: GEMINI_PRO_MODEL
     value: gemini-3.8-flash
@@ -61,8 +63,4 @@ env:
     availability: [RUNTIME]
   - variable: ISSUER_PRIVATE_KEY_PEM
     secret: ISSUER_PRIVATE_KEY_PEM
-    availability: [RUNTIME]
-  # Optional. If you don't create this secret, delete these three lines or the rollout fails.
-  - variable: GITHUB_TOKEN
-    secret: GITHUB_TOKEN
     availability: [RUNTIME]
