@@ -1,7 +1,7 @@
 import { consumeGeminiBudget } from "@/lib/ratelimit";
 
-const PRO = process.env.GEMINI_PRO_MODEL || "gemini-2.5-pro";
-const FLASH = process.env.GEMINI_FLASH_MODEL || "gemini-2.5-flash";
+const PRO = process.env.GEMINI_PRO_MODEL || "gemini-3.8-flash";
+const FLASH = process.env.GEMINI_FLASH_MODEL || "gemini-3.1-flash-lite";
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -46,7 +46,7 @@ async function call(model: string, system: string, input: unknown) {
     }
   }
 
-  const fallback = process.env.GEMINI_FALLBACK_MODEL;
+  const fallback = process.env.GEMINI_FALLBACK_MODEL || "gemini-3.7-flash";
   if (fallback) {
     try {
       return await sendRequest(fallback, system, input);

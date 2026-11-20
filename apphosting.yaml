@@ -39,11 +39,9 @@ env:
   - variable: NEXT_PUBLIC_DEMO_MENTOR_EMAIL
     value: REPLACE_WITH_DEMO_MENTOR_EMAIL
     availability: [BUILD, RUNTIME]
-  # Shown on the mentor login page, so it ends up in the client bundle by design.
-  # Kept in Secret Manager so it is not committed to the repo.
   - variable: NEXT_PUBLIC_DEMO_MENTOR_PASSWORD
-    secret: DEMO_MENTOR_PASSWORD
-    availability: [BUILD]
+    value: REPLACE_WITH_DEMO_MENTOR_PASSWORD
+    availability: [BUILD, RUNTIME]
 
   # ---- Server config ----
   - variable: MENTOR_EMAILS
@@ -53,13 +51,13 @@ env:
     value: skillproof-52076
     availability: [RUNTIME]
   - variable: GEMINI_PRO_MODEL
-    value: gemini-2.5-pro
+    value: gemini-3.8-flash
     availability: [RUNTIME]
   - variable: GEMINI_FLASH_MODEL
-    value: gemini-2.5-flash
+    value: gemini-3.1-flash-lite
     availability: [RUNTIME]
   - variable: GEMINI_FALLBACK_MODEL
-    value: gemini-2.5-flash
+    value: gemini-3.7-flash
     availability: [RUNTIME]
   - variable: GEMINI_DAILY_CAP
     value: "300"
