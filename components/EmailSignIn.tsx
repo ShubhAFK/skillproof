@@ -46,15 +46,15 @@ export default function EmailSignIn({ showDemoAccess = false }: { showDemoAccess
 
   return (
     <div className="mt-6 text-left">
-      <div className="flex items-center gap-3 mb-5" aria-hidden="true">
-        <span className="h-px flex-1 bg-white/10" />
-        <span className="text-[11px] font-mono uppercase tracking-widest text-slate-500">or</span>
-        <span className="h-px flex-1 bg-white/10" />
+      <div className="flex items-center gap-3 mb-6" aria-hidden="true">
+        <span className="h-px flex-1 bg-[var(--border)]" />
+        <span className="text-sm font-medium text-[var(--muted)]">or</span>
+        <span className="h-px flex-1 bg-[var(--border)]" />
       </div>
 
-      <form onSubmit={submit} className="flex flex-col gap-3">
+      <form onSubmit={submit} className="flex flex-col gap-4">
         <div>
-          <label htmlFor="es-email" className="block text-xs font-medium text-slate-300 mb-1.5">
+          <label htmlFor="es-email" className="block text-[14px] font-semibold text-[var(--muted)] mb-2">
             Email
           </label>
           <input
@@ -64,11 +64,11 @@ export default function EmailSignIn({ showDemoAccess = false }: { showDemoAccess
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full bg-[#0B0F17] border border-white/15 rounded-lg px-4 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-amber-400/70 focus:ring-1 focus:ring-amber-400/30 transition"
+            className="w-full min-h-[48px] bg-[var(--bg)] border border-[var(--border)] rounded-[6px] px-4 py-3 text-sm text-[var(--ink)] placeholder:text-[var(--muted)] focus:outline-none focus:border-[var(--accent)] transition-colors"
           />
         </div>
         <div>
-          <label htmlFor="es-password" className="block text-xs font-medium text-slate-300 mb-1.5">
+          <label htmlFor="es-password" className="block text-[14px] font-semibold text-[var(--muted)] mb-2">
             Password
           </label>
           <input
@@ -78,12 +78,12 @@ export default function EmailSignIn({ showDemoAccess = false }: { showDemoAccess
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="w-full bg-[#0B0F17] border border-white/15 rounded-lg px-4 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-amber-400/70 focus:ring-1 focus:ring-amber-400/30 transition"
+            className="w-full min-h-[48px] bg-[var(--bg)] border border-[var(--border)] rounded-[6px] px-4 py-3 text-sm text-[var(--ink)] placeholder:text-[var(--muted)] focus:outline-none focus:border-[var(--accent)] transition-colors"
           />
         </div>
 
         {err && (
-          <p className="text-xs text-red-300 bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2" role="alert">
+          <p className="text-sm font-medium text-[var(--seal)] bg-[rgba(140,47,43,0.07)] border border-[rgba(140,47,43,0.35)] rounded-[6px] px-3 py-2" role="alert">
             {err}
           </p>
         )}
@@ -91,33 +91,33 @@ export default function EmailSignIn({ showDemoAccess = false }: { showDemoAccess
         <button
           type="submit"
           disabled={busy}
-          className="w-full px-5 py-2.5 rounded-lg text-sm font-semibold text-slate-200 border border-white/15 hover:border-amber-400/60 hover:bg-white/5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full min-h-[48px] px-4 py-3 rounded-[6px] text-sm font-semibold text-[var(--ink-strong)] border border-[rgba(27,26,23,0.7)] hover:bg-[rgba(27,26,23,0.07)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {busy ? "Signing in..." : "Sign in with email"}
         </button>
       </form>
 
       {showDemoAccess && (
-        <div className="mt-5 rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3">
-          <p className="text-[11px] font-mono uppercase tracking-widest text-slate-400 mb-2">Evaluation access</p>
-          <dl className="grid grid-cols-[72px_1fr] gap-y-1 text-xs">
-            <dt className="text-slate-500">Email</dt>
-            <dd className="font-mono text-slate-300 break-all">{DEMO_MENTOR_EMAIL}</dd>
-            <dt className="text-slate-500">Password</dt>
-            <dd className="font-mono text-slate-300 break-all">{DEMO_MENTOR_PASSWORD}</dd>
+        <div className="mt-6 rounded-[10px] border border-[var(--border)] bg-[var(--bg)] px-4 py-4">
+          <p className="text-[14px] font-semibold text-[var(--muted)] mb-2">Evaluation access</p>
+          <dl className="grid grid-cols-[76px_1fr] gap-y-1 text-sm">
+            <dt className="text-[var(--muted)] font-medium">Email</dt>
+            <dd className="font-mono text-[var(--ink-strong)] break-all text-xs self-center">{DEMO_MENTOR_EMAIL}</dd>
+            <dt className="text-[var(--muted)] font-medium">Password</dt>
+            <dd className="font-mono text-[var(--ink-strong)] break-all text-xs self-center">{DEMO_MENTOR_PASSWORD}</dd>
           </dl>
-          <div className="mt-3 flex items-center gap-2">
+          <div className="mt-2 flex flex-wrap items-center gap-2">
             <button
               type="button"
               onClick={() => {
                 setEmail(DEMO_MENTOR_EMAIL);
                 setPassword(DEMO_MENTOR_PASSWORD);
               }}
-              className="text-xs font-semibold text-amber-400 hover:text-amber-300 transition-colors"
+              className="min-h-[44px] inline-flex items-center text-sm font-semibold text-[var(--accent)] hover:text-[var(--accent-deep)] hover:underline transition-colors"
             >
               Fill login
             </button>
-            <span className="text-xs text-slate-400">
+            <span className="text-xs font-medium text-[var(--muted)]">
               For Evaluation Purposes
             </span>
           </div>

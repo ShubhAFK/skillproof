@@ -1,0 +1,17 @@
+warning: in the working copy of 'app/globals.css', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/layout.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/learn/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/mentor/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'components/EmailSignIn.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'components/Header.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'components/VerifyCertificate.tsx', LF will be replaced by CRLF the next time Git touches it
+ app/globals.css                  | 726 [32m++++++++++++++++[m[31m-----------------------[m
+ app/layout.tsx                   |  23 [32m+[m[31m-[m
+ app/learn/page.tsx               | 130 [32m+++[m[31m----[m
+ app/mentor/page.tsx              | 210 [32m+++++[m[31m------[m
+ app/page.tsx                     | 149 [32m++++[m[31m----[m
+ components/EmailSignIn.tsx       |  42 [32m+[m[31m--[m
+ components/Header.tsx            |  43 [32m+[m[31m--[m
+ components/VerifyCertificate.tsx | 347 [32m+++++++++[m[31m----------[m
+ 8 files changed, 776 insertions(+), 894 deletions(-)
