@@ -98,6 +98,27 @@ function getSignal(timeoutMs = 8000): AbortSignal {
 const IGNORED_PATH_REGEX = /(^|\/)(node_modules|dist|\.next|build|\.git)(\/|$)/i;
 const IGNORED_LOCK_REGEX = /(^|\/)(package-lock\.json|yarn\.lock|pnpm-lock\.yaml|bun\.lockb|Cargo\.lock|composer\.lock|Gemfile\.lock|poetry\.lock)$/i;
 
+async function fetchGithub(url: string, init?: RequestInit): Promise<Response> {
+  let res: Response;
+  try {
+    res = await fetch(url, init);
+  } catch (netErr: any) {
+    const msg = (netErr?.message || "").slice(0, 300);
+    console.error("github", 0, "none", msg);
+    throw netErr;
+  }
+  if (!res.ok) {
+    try {
+      const text = await res.clone().text();
+      const body = text.slice(0, 300);
+      console.error("github", res.status, "none", body);
+    } catch {
+      console.error("github", res.status, "none", "");
+    }
+  }
+  return res;
+}
+
 /**
  * Fetches repository evidence in parallel from the GitHub REST API.
  * Uses 8s timeout per call. Works authenticated if GITHUB_TOKEN exists, or unauthenticated.
@@ -124,23 +145,23 @@ export async function fetchRepoEvidence(url: string): Promise<RepoEvidenceResult
 
   try {
     const [repoRes, readmeRes, treeRes, commitsRes, languagesRes] = await Promise.allSettled([
-      fetch(`https://api.github.com/repos/${parsed.owner}/${parsed.repo}`, {
+      fetchGithub(`https://api.github.com/repos/${parsed.owner}/${parsed.repo}`, {
         headers,
         signal: getSignal(8000),
       }),
-      fetch(`https://api.github.com/repos/${parsed.owner}/${parsed.repo}/readme`, {
+      fetchGithub(`https://api.github.com/repos/${parsed.owner}/${parsed.repo}/readme`, {
         headers: { ...headers, Accept: "application/vnd.github.raw+json" },
         signal: getSignal(8000),
       }),
-      fetch(`https://api.github.com/repos/${parsed.owner}/${parsed.repo}/git/trees/HEAD?recursive=1`, {
+      fetchGithub(`https://api.github.com/repos/${parsed.owner}/${parsed.repo}/git/trees/HEAD?recursive=1`, {
         headers,
         signal: getSignal(8000),
       }),
-      fetch(`https://api.github.com/repos/${parsed.owner}/${parsed.repo}/commits?per_page=30`, {
+      fetchGithub(`https://api.github.com/repos/${parsed.owner}/${parsed.repo}/commits?per_page=30`, {
         headers,
         signal: getSignal(8000),
       }),
-      fetch(`https://api.github.com/repos/${parsed.owner}/${parsed.repo}/languages`, {
+      fetchGithub(`https://api.github.com/repos/${parsed.owner}/${parsed.repo}/languages`, {
         headers,
         signal: getSignal(8000),
       }),

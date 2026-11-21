@@ -7,21 +7,41 @@ const FALLBACK = process.env.GEMINI_FALLBACK_MODEL || "gemini-3.7-flash";
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 async function sendRequest(model: string, system: string, input: unknown) {
-  const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "x-goog-api-key": process.env.GEMINI_API_KEY! },
-    body: JSON.stringify({
-      systemInstruction: { parts: [{ text: system }] },
-      contents: [{ role: "user", parts: [{ text: JSON.stringify(input) }] }],
-      generationConfig: { responseMimeType: "application/json", temperature: 0.2 },
-    }),
-  });
-
-  if (r.status === 429 || r.status === 503) {
-    throw new Error("RATE_LIMIT");
+  let r: Response;
+  try {
+    r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-goog-api-key": process.env.GEMINI_API_KEY! },
+      body: JSON.stringify({
+        systemInstruction: { parts: [{ text: system }] },
+        contents: [{ role: "user", parts: [{ text: JSON.stringify(input) }] }],
+        generationConfig: { responseMimeType: "application/json", temperature: 0.2 },
+      }),
+    });
+  } catch (netErr: any) {
+    const msg = (netErr?.message || "").slice(0, 300);
+    console.error("gemini", 0, model, msg);
+    throw netErr;
   }
+
   if (!r.ok) {
-    throw new Error(`HTTP_${r.status}`);
+    const text = await r.text().catch(() => "");
+    const body = text.slice(0, 300);
+    console.error("gemini", r.status, model, body);
+    if (r.status === 429 || r.status === 503) {
+      const err: any = new Error("RATE_LIMIT");
+      err.step = "gemini";
+      err.status = r.status;
+      err.model = model;
+      err.body = body;
+      throw err;
+    }
+    const err: any = new Error(`HTTP_${r.status}`);
+    err.step = "gemini";
+    err.status = r.status;
+    err.model = model;
+    err.body = body;
+    throw err;
   }
   const j = await r.json();
   const t = j.candidates?.[0]?.content?.parts?.[0]?.text;
@@ -50,7 +70,12 @@ export async function reviewWithPro(s: unknown) {
         return await sendRequest(FALLBACK, REVIEW_SYS, s);
       } catch (fallbackErr: any) {
         if (fallbackErr?.message === "RATE_LIMIT") {
-          throw new Error("Gemini is busy, try again in a minute");
+          const finalErr: any = new Error("Gemini is busy, try again in a minute");
+          finalErr.step = fallbackErr?.step || "gemini";
+          finalErr.status = fallbackErr?.status || 429;
+          finalErr.model = fallbackErr?.model || FALLBACK;
+          finalErr.body = fallbackErr?.body || "";
+          throw finalErr;
         }
         throw fallbackErr;
       }
@@ -73,7 +98,12 @@ export async function draftBadgeWithFlash(s: unknown) {
         continue;
       }
       if (err?.message === "RATE_LIMIT") {
-        throw new Error("Gemini is busy, try again in a minute");
+        const finalErr: any = new Error("Gemini is busy, try again in a minute");
+        finalErr.step = err?.step || "gemini";
+        finalErr.status = err?.status || 429;
+        finalErr.model = err?.model || FLASH;
+        finalErr.body = err?.body || "";
+        throw finalErr;
       }
       throw err;
     }
